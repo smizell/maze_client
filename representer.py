@@ -46,11 +46,14 @@ class Links:
     def filter_by_rel(self, rel):
         return [item for item in self.items if item.rel == rel]
 
-    def get_first_by_rel(self, rel):
+    def get_by_rel(self, rel):
         return self.filter_by_rel(rel)[0]
 
     def has_rel(self, rel):
         return len(self.filter_by_rel(rel)) > 0
+
+    def all_rels(self):
+        return [item.rel for item in self.items]
 
 class Link:
     """

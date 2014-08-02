@@ -73,8 +73,8 @@ class TestRepresenterClass(unittest.TestCase):
         self.assertTrue(self.representer.links.has_rel('east'))
         self.assertFalse(self.representer.links.has_rel('dne'))
 
-    def test_get_first_by_rel(self):
-        first = self.representer.links.get_first_by_rel('east')
+    def test_get_by_rel(self):
+        first = self.representer.links.get_by_rel('east')
         self.assertEqual(first.rel, 'east')
 
 class TestHypermediaClient(unittest.TestCase):
