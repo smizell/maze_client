@@ -3,6 +3,12 @@ Maze Client
 
 This code shows an example of how to organize code around hypermedia clients.
 
+To install:
+
+```shell
+pip install -r requirements.pip
+```
+
 ## Adapters
 
 [Adapters Directory](https://github.com/smizell/maze_client/tree/master/adapters)
