@@ -3,6 +3,7 @@ import unittest
 
 import adapters.maze_xml as maze_xml
 import translator
+import hypermedia_client
 
 import representer as representer
 
@@ -75,6 +76,20 @@ class TestRepresenterClass(unittest.TestCase):
     def test_get_first_by_rel(self):
         first = self.representer.links.get_first_by_rel('east')
         self.assertEqual(first.rel, 'east')
+
+class TestHypermediaClient(unittest.TestCase):
+
+    def setUp(self):
+        self.translate = translator.Translator()
+        self.translate.register(maze_xml.MazeXMLAdapter)
+
+    def test_get_headers(self):
+        headers = hypermedia_client.get_accept_header(self.translate)
+        self.assertEqual(headers, 'application/vnd.amundsen.maze+xml')
+
+    def test_headers(self):
+        client = hypermedia_client.HypermediaClient(self.translate)
+        self.assertEqual(client.headers()['Accept'], 'application/vnd.amundsen.maze+xml')
 
 if __name__ == '__main__':
     unittest.main()
