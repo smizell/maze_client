@@ -30,3 +30,7 @@ This Hypermedia Client would also exist as its own library apart from this proje
 ## Maze Bot
 
 This is the code that actually solves the maze. It relies on the Hypermedia Client to handle all the requests and responses, and it relies on the Representer to provide the general interface. At that point, the developer simply writes the moves the bot should take as it goes through the maze.
+
+## Solver
+
+The solver file uses the Maze Bot to solve the maze. I put this code in a file by itself to separate out the code a little for the purpose of the example.
