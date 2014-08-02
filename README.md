@@ -3,7 +3,7 @@ Maze Client
 
 This code shows an example of how to organize code around hypermedia clients.
 
-To install:
+To install requirements:
 
 ```shell
 pip install -r requirements.pip
