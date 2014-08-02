@@ -25,6 +25,8 @@ This client understands how to interact with resources, by following links and o
 
 This helps move away from requesting specific media types and relying on the client and translator to do the content negotiation.
 
+This Hypermedia Client would also exist as its own library apart from this project.
+
 ## Maze Bot
 
 This is the code that actually solves the maze. It relies on the Hypermedia Client to handle all the requests and responses, and it relies on the Representer to provide the general interface. At that point, the developer simply writes the moves the bot should take as it goes through the maze.
