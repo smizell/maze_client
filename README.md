@@ -9,6 +9,12 @@ To install requirements:
 pip install -r requirements.pip
 ```
 
+To run the local server, which runs at http://127.0.0.1:5000:
+
+```shell
+python server.py
+```
+
 ## Adapters
 
 [Adapters Directory](https://github.com/smizell/maze_client/tree/master/adapters)

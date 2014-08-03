@@ -7,5 +7,5 @@ class Translator:
         self.adapters[adapter.media_type] = adapter
 
     def translate_from(self, media_type, raw_representation):
-        adapter = self.adapters[media_type]()
+        adapter = self.adapters[media_type](adapters=self.adapters)
         return adapter.parse(raw_representation)

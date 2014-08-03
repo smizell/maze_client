@@ -26,11 +26,22 @@ class MazeXMLAdapter:
     # Used by the translator to know how to register this adapter
     media_type = 'application/vnd.amundsen.maze+xml'
 
+    def __init__(self, adapters=None):
+        self.adapters = adapters
+
     def parse(self, raw_representation):
         root = ET.fromstring(raw_representation)
         type_of = get_type_of(root)
         links = parse_links(root[0].findall('link'))
-        return representer.Representer(type_of=type_of, links=links)
+        return representer.Representer(type_of=type_of, links=links,
+                                       adapters=self.adapters)
 
     def build(self, representer):
-        return True
+        root = ET.Element('maze')
+        root.set('version', '1.0')
+        type_of = ET.SubElement(root, representer.type_of)
+        for link in representer.links.items:
+            new_link = ET.SubElement(type_of, 'link')
+            new_link.set('rel', link.rel)
+            new_link.set('href', link.href)
+        return ET.tostring(root, encoding='utf8', method='xml')

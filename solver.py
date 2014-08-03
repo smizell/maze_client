@@ -20,7 +20,12 @@ def solve_maze(maze_url):
     return bot
 
 if __name__ == '__main__':
+    # Mike Amundsen's Server
     maze_url = 'http://amundsen.com/examples/mazes/2d/five-by-five/'
+
+    # Local Server (python server.py)
+    # maze_url = 'http://127.0.0.1:5000/'
+
     victory_bot = solve_maze(maze_url)
     print "Completed: " + str(victory_bot.completed)
     print "Moves: " + str(victory_bot.moves)

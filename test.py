@@ -62,8 +62,8 @@ class TestRepresenterClass(unittest.TestCase):
     def setUp(self):
         translate = translator.Translator()
         translate.register(maze_xml.MazeXMLAdapter)
-        media_type = 'application/vnd.amundsen.maze+xml'
-        self.representer = translate.translate_from(media_type, cell_xml)
+        self.media_type = 'application/vnd.amundsen.maze+xml'
+        self.representer = translate.translate_from(self.media_type, cell_xml)
 
     def test_filter_by_rel(self):
         filtered = self.representer.links.filter_by_rel('east')
@@ -76,6 +76,12 @@ class TestRepresenterClass(unittest.TestCase):
     def test_get_by_rel(self):
         first = self.representer.links.get_by_rel('east')
         self.assertEqual(first.rel, 'east')
+
+    def test_translate_to(self):
+        new_xml = str(self.representer.translate_to(self.media_type))
+        root = ET.fromstring(new_xml)
+        self.assertEqual(root[0].tag, 'cell')
+        self.assertEqual(len(root[0].findall('link')), 2)
 
 class TestHypermediaClient(unittest.TestCase):
 

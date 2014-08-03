@@ -11,7 +11,7 @@ class Representer(translator.Translator):
     type.
     """
 
-    def __init__(self, type_of, links=None, adapters={}):
+    def __init__(self, type_of, adapters, links=None):
         # This will be where our links are stored
         if links:
             self.links = links
@@ -27,7 +27,7 @@ class Representer(translator.Translator):
         self.adapters = adapters
 
     def translate_to(self, media_type):
-        adapter = adapters[media_type]
+        adapter = self.adapters[media_type]()
         return adapter.build(self)
 
 class Links:
