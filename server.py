@@ -9,7 +9,7 @@ app = Flask(__name__)
 rels = ['north', 'east', 'south', 'west', 'exit']
 
 # Each cell and it's links to the other cells
-# Each item in these lists corresponds to the rels above
+# The items of each cell correspond to the rel above
 cells = [
     [None, 5, None, None, None],
     [None, 6, None, None, None],
@@ -38,45 +38,72 @@ cells = [
     [None, None, None, None, 999]
 ]
 
+# The media type this server will send
+MEDIA_TYPE = MazeXMLAdapter.media_type
+
+# Helper functions for the views
+
 def maze_rep(type_of):
+    """
+    Sets up a Representer for the resource
+    """
     rep = Representer(type_of=type_of, adapters={})
     rep.register(MazeXMLAdapter)
     return rep
 
+def maze_xml_response(rep):
+    """
+    Translates a representer to Maze+XML and creates
+    a respones with the Maze+XML media type
+    """
+    maze_xml = rep.translate_to(MEDIA_TYPE)
+    return Response(maze_xml, mimetype=MEDIA_TYPE)
+
 def link_to_cell(cell_num):
+    """
+    Helper for generating links to specific cells
+    """
     return 'http://127.0.0.1:5000/cells/'+str(cell_num)
 
-def get_links(cell_num):
+def get_links_for_cell(cell_num):
+    """
+    Generates link for a specific cell
+    """
     cell = cells[cell_num]
     cell_with_rels = dict(zip(rels, cell))
     links = dict((k, link_to_cell(v)) for k, v in cell_with_rels.iteritems() if v)
     return links
 
+# Route and views
+
 @app.route('/')
 def root():
+    """
+    Root resource
+    """
     rep = maze_rep('item')
     rep.links.add(rel='start', href=link_to_cell(0))
-    media_type = MazeXMLAdapter.media_type
-    maze_xml = rep.translate_to(media_type)
-    return Response(maze_xml, mimetype=media_type)
+    return maze_xml_response(rep)
 
 @app.route('/cells/999')
 def exit():
+    """
+    Exit resource
+    """
     rep = maze_rep('completed')
     rep.links.add(rel='start', href=link_to_cell(0))
-    media_type = MazeXMLAdapter.media_type
-    maze_xml = rep.translate_to(media_type)
-    return Response(maze_xml, mimetype=media_type)
+    return maze_xml_response(rep)
 
 @app.route('/cells/<cell_num>')
 def cell(cell_num):
+    """
+    Cell resource
+    """
     rep = maze_rep('cell')
-    links = get_links(int(cell_num))
+    links = get_links_for_cell(int(cell_num))
     for rel, link in links.iteritems():
         rep.links.add(rel=rel, href=link)
-    media_type = MazeXMLAdapter.media_type
-    maze_xml = rep.translate_to(media_type)
-    return Response(maze_xml, mimetype=media_type)
+    return maze_xml_response(rep)
 
 if __name__ == "__main__":
     app.debug = True
