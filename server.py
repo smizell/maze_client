@@ -51,13 +51,13 @@ def maze_rep(type_of):
     rep.register(MazeXMLAdapter)
     return rep
 
-def maze_xml_response(rep):
+def maze_response(rep):
     """
     Translates a representer to Maze+XML and creates
     a respones with the Maze+XML media type
     """
-    maze_xml = rep.translate_to(MEDIA_TYPE)
-    return Response(maze_xml, mimetype=MEDIA_TYPE)
+    maze_rep = rep.translate_to(MEDIA_TYPE)
+    return Response(maze_rep, mimetype=MEDIA_TYPE)
 
 def link_to_cell(cell_num):
     """
@@ -81,29 +81,29 @@ def root():
     """
     Root resource
     """
-    rep = maze_rep('item')
+    rep = maze_rep(type_of='item')
     rep.links.add(rel='start', href=link_to_cell(0))
-    return maze_xml_response(rep)
+    return maze_response(rep)
 
 @app.route('/cells/999')
 def exit():
     """
     Exit resource
     """
-    rep = maze_rep('completed')
+    rep = maze_rep(type_of='completed')
     rep.links.add(rel='start', href=link_to_cell(0))
-    return maze_xml_response(rep)
+    return maze_response(rep)
 
 @app.route('/cells/<cell_num>')
 def cell(cell_num):
     """
     Cell resource
     """
-    rep = maze_rep('cell')
+    rep = maze_rep(type_of='cell')
     links = get_links_for_cell(int(cell_num))
     for rel, link in links.iteritems():
         rep.links.add(rel=rel, href=link)
-    return maze_xml_response(rep)
+    return maze_response(rep)
 
 if __name__ == "__main__":
     app.debug = True
