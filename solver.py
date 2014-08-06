@@ -1,4 +1,5 @@
 from adapters.maze_xml import MazeXMLAdapter
+from adapters.hal_json import HalJSONAdapter
 from translator import Translator
 from hypermedia_client import HypermediaClient
 from maze_bot import MazeXMLBot
@@ -8,6 +9,7 @@ def solve_maze(maze_url):
     # the media type we'll be using
     translator = Translator()
     translator.register(MazeXMLAdapter)
+    translator.register(HalJSONAdapter)
 
     # Load up the hypermedia client and give it the translort so
     # it knows what to put in the Accept header
@@ -21,10 +23,10 @@ def solve_maze(maze_url):
 
 if __name__ == '__main__':
     # Mike Amundsen's Server
-    maze_url = 'http://amundsen.com/examples/mazes/2d/five-by-five/'
+    # maze_url = 'http://amundsen.com/examples/mazes/2d/five-by-five/'
 
     # Local Server (python server.py)
-    # maze_url = 'http://127.0.0.1:5000/'
+    maze_url = 'http://127.0.0.1:5000/'
 
     victory_bot = solve_maze(maze_url)
     print "Completed: " + str(victory_bot.completed)

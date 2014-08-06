@@ -2,6 +2,7 @@ from flask import Flask, Response
 
 from representer import Representer
 from adapters.maze_xml import MazeXMLAdapter
+from adapters.hal_json import HalJSONAdapter
 
 app = Flask(__name__)
 
@@ -39,7 +40,7 @@ cells = [
 ]
 
 # The media type this server will send
-MEDIA_TYPE = MazeXMLAdapter.media_type
+MEDIA_TYPE = HalJSONAdapter.media_type
 
 # Helper functions for the views
 
@@ -48,7 +49,7 @@ def maze_rep(type_of):
     Sets up a Representer for the resource
     """
     rep = Representer(type_of=type_of, adapters={})
-    rep.register(MazeXMLAdapter)
+    rep.register(HalJSONAdapter)
     return rep
 
 def maze_response(rep):
