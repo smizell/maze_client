@@ -55,6 +55,8 @@ This is the code that actually solves the maze. It relies on the Hypermedia Clie
 
 ## Solver
 
+[Solver Code](https://github.com/smizell/maze_client/blob/master/solver.py)
+
 The solver file uses the Maze Bot to solve the maze. I put this code in a file by itself to separate out the code a little for the purpose of the example.
 
 ## Server
