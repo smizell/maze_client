@@ -20,7 +20,10 @@ class Representer(translator.Translator):
 
         # This will be how we define if this representer is for
         # a collection, item, or cell
-        self.type_of = type_of
+        if type_of:
+            self.type_of = type_of
+        else:
+            self.type_of = None
 
         # So our representer knows how to translate to other registered
         # media types

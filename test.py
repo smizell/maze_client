@@ -1,7 +1,8 @@
 import xml.etree.ElementTree as ET
 import unittest
+import json
 
-import adapters.maze_xml as maze_xml
+from adapters import hal_json, maze_xml
 import translator
 import hypermedia_client
 
@@ -15,6 +16,13 @@ cell_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
     </cell>
 </maze>
 """
+
+cell_hal_json = """{
+    "_links": {
+        "north": { "href": "/cell/1" },
+        "south": { "href": "/cell/1" }
+    }
+}"""
 
 class TestMazeXMLFunctions(unittest.TestCase):
 
@@ -96,6 +104,36 @@ class TestHypermediaClient(unittest.TestCase):
     def test_headers(self):
         client = hypermedia_client.HypermediaClient(self.translate)
         self.assertEqual(client.headers()['Accept'], 'application/vnd.amundsen.maze+xml')
+
+class TestHalJSONFunctions(unittest.TestCase):
+
+    def setUp(self):
+        self.hal_json = json.loads(cell_hal_json)
+
+    def test_parse_links(self):
+        links = hal_json.parse_links(self.hal_json)
+        self.assertEqual(len(links.items), 2)
+
+    def test_build_link(self):
+        link = hal_json.build_link(representer.Link(rel="north", href="/test"))
+        expected_link = ("north", { 'href': "/test" })
+        self.assertEqual(link, expected_link)
+
+class TestHalJSONClass(unittest.TestCase):
+
+    def setUp(self):
+        self.adapter = hal_json.HalJSONAdapter()
+
+    def test_parse(self):
+        rep = self.adapter.parse(cell_hal_json)
+        self.assertTrue(rep.links.has_rel('north'))
+
+    def test_build(self):
+        rep = representer.Representer(type_of="", adapters={})
+        rep.register(hal_json.HalJSONAdapter)
+        rep.links.add(rel='north', href='/test')
+        raw_hal = json.loads(rep.translate_to('application/hal+json'))
+        self.assertTrue(raw_hal.has_key('_links'))
 
 if __name__ == '__main__':
     unittest.main()
