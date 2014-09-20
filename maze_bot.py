@@ -36,16 +36,16 @@ class MazeXMLBot:
         # We beat the maze!
         if self.cell.links.has_rel('exit'):
             self.completed = True
-            exit_link = self.cell.links.get_by_rel('exit').href
+            exit_link = self.cell.links.get('exit').href
             self.cell = self.client.follow(exit_link)
             return
 
         # Based on the direction we're facing and the defined rules, follow
         # the best link to find the exit.
-        available_moves = self.cell.links.all_rels()
+        available_moves = self.cell.links.get_rels()
         for direction in rules[self.facing]:
             if direction in available_moves:
-                direction_link = self.cell.links.get_by_rel(direction).href
+                direction_link = self.cell.links.get(direction).href
                 self.facing = direction
                 self.cell = self.client.follow(direction_link)
                 return self.make_next_move()
@@ -58,7 +58,7 @@ class MazeXMLBot:
             start_rep = self.client.follow(self.maze_url)
             if start_rep.links.has_rel('start'):
                 self.moves += 1
-                self.cell = self.client.follow(start_rep.links.get_by_rel('start').href)
+                self.cell = self.client.follow(start_rep.links.get('start').href)
                 self.facing = 'north'
                 self.started = True
 

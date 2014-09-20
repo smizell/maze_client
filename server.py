@@ -1,8 +1,6 @@
 from flask import Flask, Response
 
-from representer import Representer
-from adapters.maze_xml import MazeXMLAdapter
-from adapters.hal_json import HalJSONAdapter
+from hypermedia_resource import HypermediaResource
 
 app = Flask(__name__)
 
@@ -40,8 +38,7 @@ cells = [
 ]
 
 # The media type this server will send
-# MEDIA_TYPE = MazeXMLAdapter.media_type
-MEDIA_TYPE = HalJSONAdapter.media_type
+MEDIA_TYPE = "application/hal+json"
 
 # Helper functions for the views
 
@@ -49,17 +46,16 @@ def maze_rep(type_of):
     """
     Sets up a Representer for the resource
     """
-    rep = Representer(type_of=type_of, adapters={})
-    rep.register(MazeXMLAdapter)
-    rep.register(HalJSONAdapter)
-    return rep
+    resource = HypermediaResource()
+    resource.meta.attributes.add("type", type_of)
+    return resource
 
-def maze_response(rep):
+def maze_response(resource):
     """
     Translates a representer to Maze+XML and creates
     a respones with the Maze+XML media type
     """
-    maze_rep = rep.translate_to(MEDIA_TYPE)
+    maze_rep = resource.translate_to(MEDIA_TYPE)
     return Response(maze_rep, mimetype=MEDIA_TYPE)
 
 def link_to_cell(cell_num):
@@ -84,29 +80,29 @@ def root():
     """
     Root resource
     """
-    rep = maze_rep(type_of='item')
-    rep.links.add(rel='start', href=link_to_cell(0))
-    return maze_response(rep)
+    resource = maze_rep(type_of='item')
+    resource.links.add(rel='start', href=link_to_cell(0))
+    return maze_response(resource)
 
 @app.route('/cells/999')
 def exit():
     """
     Exit resource
     """
-    rep = maze_rep(type_of='completed')
-    rep.links.add(rel='start', href=link_to_cell(0))
-    return maze_response(rep)
+    resource = maze_rep(type_of='completed')
+    resource.links.add(rel='start', href=link_to_cell(0))
+    return maze_response(resource)
 
 @app.route('/cells/<cell_num>')
 def cell(cell_num):
     """
     Cell resource
     """
-    rep = maze_rep(type_of='cell')
+    resource = maze_rep(type_of='cell')
     links = get_links_for_cell(int(cell_num))
     for rel, link in links.iteritems():
-        rep.links.add(rel=rel, href=link)
-    return maze_response(rep)
+        resource.links.add(rel=rel, href=link)
+    return maze_response(resource)
 
 if __name__ == "__main__":
     app.debug = True
