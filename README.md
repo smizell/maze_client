@@ -55,4 +55,14 @@ This is the code that actually solves the maze. It relies on the Hypermedia Clie
 
 ## Solver
 
+[Solver Code](https://github.com/smizell/maze_client/blob/master/solver.py)
+
 The solver file uses the Maze Bot to solve the maze. I put this code in a file by itself to separate out the code a little for the purpose of the example.
+
+## Server
+
+[Server Code](https://github.com/smizell/maze_client/blob/master/server.py)
+
+The server code uses the Representer to translate to a specific media type. This allows for a new media type to be served without changing the logic for creating and serving the resources. 
+
+In the best case scenario, the server would handle content negotiation and send the best media type for the client. This current example only supports one media type at a time.
