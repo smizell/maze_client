@@ -29,7 +29,7 @@ The solver file uses the Maze Bot to solve the maze. I put this code in a file b
 
 ### Server
 
-[Server Code](https://github.com/smizell/maze_client/blob/master/server.py)
+[Server Code](https://github.com/smizell/maze_server)
 
 The server code uses the Hypermedia Resource to translate to a specific media type. This allows for a new media type to be served without changing the logic for creating and serving the resources. 
 
