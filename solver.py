@@ -1,3 +1,4 @@
+import sys
 from hypermedia_resource import HypermediaResource
 from hypermedia_client import HypermediaClient
 from maze_bot import MazeXMLBot
@@ -19,8 +20,7 @@ if __name__ == '__main__':
     # Mike Amundsen's Server
     #maze_url = 'http://amundsen.com/examples/mazes/2d/five-by-five/'
 
-    # Local Server (python server.py)
-    maze_url = 'http://127.0.0.1:5000/'
+    maze_url = sys.argv[-1]
 
     victory_bot = solve_maze(maze_url)
     print "Completed: " + str(victory_bot.completed)
