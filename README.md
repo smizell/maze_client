@@ -45,6 +45,8 @@ To install requirements:
 pip install -r requirements.pip
 ```
 
+To run the client against a server:
+
 ```shell
-python server.py http://maze-server.herokuapp.com/
+python solver.py http://maze-server.herokuapp.com/
 ```
