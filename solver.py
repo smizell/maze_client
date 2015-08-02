@@ -1,10 +1,10 @@
 import sys
-from hypermedia_resource import HypermediaResource
+from representor import Representor
 from hypermedia_client import HypermediaClient
 from maze_bot import MazeXMLBot
 
 def solve_maze(maze_url):
-    resource = HypermediaResource()
+    resource = Representor()
 
     # Load up the hypermedia client and give it the hypermedia
     # resource so it knows what to put in the Accept header

@@ -16,6 +16,5 @@ class HypermediaClient:
         print link
         response = requests.get(url=link, headers=self.headers())
         media_type = response.headers.get('content-type').split('; ')[0]
-        representer = self.resource.translate_from(media_type, response.text)
-        return representer
-
+        representor = self.resource.translate_from(media_type, response.text)
+        return representor
